@@ -1,4 +1,4 @@
-module Basic_ALU_Ver(
+module Basic_ALU(
 	input [31:0] A, B,
 	output wire [31:0] Out,
 	output wire overflow,
