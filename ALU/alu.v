@@ -4,7 +4,7 @@ module Basic_ALU_Ver(
 	output wire overflow,
 	input [3:0] control // control Signals
 );
-    //0001: ADD
+
     reg [31:0] Negative_B, compare_result;
     always @(*) begin
         case (control)
