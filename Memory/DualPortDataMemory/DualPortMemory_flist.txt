@@ -1,0 +1,11 @@
+# Output products list for <DualPortMemory>
+DualPortMemory.asy
+DualPortMemory.ngc
+DualPortMemory.sym
+DualPortMemory.v
+DualPortMemory.veo
+DualPortMemory.vhd
+DualPortMemory.vho
+DualPortMemory.xco
+DualPortMemory_flist.txt
+DualPortMemory_xmdf.tcl

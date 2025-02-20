@@ -1,0 +1,11 @@
+# Output products list for <SinglePortSynchronousMemory>
+SinglePortSynchronousMemory.asy
+SinglePortSynchronousMemory.ngc
+SinglePortSynchronousMemory.sym
+SinglePortSynchronousMemory.v
+SinglePortSynchronousMemory.veo
+SinglePortSynchronousMemory.vhd
+SinglePortSynchronousMemory.vho
+SinglePortSynchronousMemory.xco
+SinglePortSynchronousMemory_flist.txt
+SinglePortSynchronousMemory_xmdf.tcl
