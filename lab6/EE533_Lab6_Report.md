@@ -211,9 +211,7 @@ endmodule
 ```
 
 * Screenshot
-
-![Screenshot 2025-02-19 152920](C:\Users\StepF\Pictures\Screenshots\Screenshot 2025-02-19 152920.png)
-
+![alt text](<Pic/Screenshot 2025-02-19 152802.png>)
 ## 2. Building Register File and Memories
 
 ### 2.1 Register File
@@ -395,8 +393,7 @@ endmodule
 ```
 
 * Screenshot
-
-![Screenshot 2025-02-19 165544](C:\Users\StepF\Documents\GitHub\ee533\lab 6\Pic\Screenshot 2025-02-19 165544.png)
+![alt text](<Pic/Screenshot 2025-02-19 165544.png>)
 
 ## 3. Building Pipeline Datapath
 
