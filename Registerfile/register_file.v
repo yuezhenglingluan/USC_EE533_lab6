@@ -1,25 +1,44 @@
+module RF
+(
+    // input clk,              // Clock
+    input rst,              // Reset
+    input Write_Enable,     // Write Enable
+    input [63:0] rW_Data,     // Data to Be Written
+    input [1:0] rW_Addr,      // Write Data Address
+    input [1:0] rA_Addr,    // Output Data Address for Port A
+    input [1:0] rB_Addr,    // Output Data Address for Port B
 
-module register_file (
-    input clk,
-    input [1:0] read_addr1, read_addr2,
-    output reg [63:0] read_data1, read_data2,
-    input [1:0] write_addr,
-    input [63:0] write_data,
-    input write_enable
+    output reg [63:0] rA_Data,  // Output Data Port for Port A
+    output reg [63:0] rB_Data   // Output Data Port for Port B
 );
 
-reg [63:0] registers [0:3]; // 4 registers, 64-bit each
+    reg [63:0] RF [3:0];    // The Register File itself Contains 4 Registers, 64-bit Each
+	integer i;
 
-// Asynchronous reads
-always @(*) begin
-    read_data1 = registers[read_addr1];
-    read_data2 = registers[read_addr2];
-end
+    always @(*) begin
+        // RF[0] = 64'b0;  // Register 0 hardcodes 0
 
-// Synchronous write
-always @(posedge clk) begin
-    if (write_enable)
-        registers[write_addr] <= write_data;
-end
+        if(rst) begin
+            for (i = 0; i < 4; i = i + 1) begin
+                RF[i] = 64'b0;  // Writes 0 to All Register File Locations
+            end
+        end else if(Write_Enable) begin
+            RF[rW_Addr] = rW_Data
+        end
 
+        // Port A and Port B Data Output with Internal Forwarding Register File
+        if(rA_Addr == rW_Addr && rB_Addr != rW_Addr && rW_Addr != 0) begin
+            rA_Data = rW_Addr;
+            rB_Data = RF[rB_Addr];
+        end else if(rB_Addr == rW_Addr && rA_Addr != rW_Addr && rW_Addr != 0) begin
+            rA_Data = RF[rA_Addr];
+            rB_Data = rW_Addr;
+        end else if(rB_Addr == rW_Addr && rA_Addr == rW_Addr && rW_Addr != 0) begin
+            rA_Data = rW_Addr;
+            rB_Data = rW_Addr;
+        end else begin
+            rA_Data = RF[rA_Addr];
+            rB_Data = RF[rB_Addr];
+        end
+    end
 endmodule
