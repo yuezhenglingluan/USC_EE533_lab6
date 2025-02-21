@@ -1,0 +1,37 @@
+# Reading C:/questasim64_10.4c/tcl/vsim/pref.tcl
+# //  Questa Sim-64
+# //  Version 10.4c win64 Jul 20 2015
+# //
+# //  Copyright 1991-2015 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //  THIS DOCUMENT CONTAINS TRADE SECRETS AND COMMERCIAL OR FINANCIAL
+# //  INFORMATION THAT ARE PRIVILEGED, CONFIDENTIAL, AND EXEMPT FROM
+# //  DISCLOSURE UNDER THE FREEDOM OF INFORMATION ACT, 5 U.S.C. SECTION 552.
+# //  FURTHERMORE, THIS INFORMATION IS PROHIBITED FROM DISCLOSURE UNDER
+# //  THE TRADE SECRETS ACT, 18 U.S.C. SECTION 1905.
+# //
+# OpenFile C:/Users/yiyli/Desktop/lab3/USC_EE533_lab6/datapath/datapath.v
+vlog -reportprogress 300 -work work C:/Users/yiyli/Desktop/lab3/USC_EE533_lab6/datapath/datapath.v
+# QuestaSim-64 vlog 10.4c Compiler 2015.07 Jul 20 2015
+# Start time: 11:12:06 on Feb 21,2025
+# vlog -reportprogress 300 -work work C:/Users/yiyli/Desktop/lab3/USC_EE533_lab6/datapath/datapath.v 
+# -- Compiling module instr_mem
+# -- Compiling module data_mem
+# -- Compiling module reg_file
+# -- Compiling module IF_ID
+# -- Compiling module ID_EX
+# -- Compiling module EX_MEM
+# -- Compiling module MEM_WB
+# -- Compiling module pipeline
+# ** Error: (vlog-13069) C:/Users/yiyli/Desktop/lab3/USC_EE533_lab6/datapath/datapath.v(84): near "=": syntax error, unexpected '=', expecting ';'.
+# 
+# ** Error (suppressible): C:/Users/yiyli/Desktop/lab3/USC_EE533_lab6/datapath/datapath.v(118): (vlog-2388) 'memwb_rd' already declared in this scope (pipeline).
+# 
+# ** Error (suppressible): C:/Users/yiyli/Desktop/lab3/USC_EE533_lab6/datapath/datapath.v(122): (vlog-2388) 'wb_data' already declared in this scope (pipeline).
+# 
+# End time: 11:12:06 on Feb 21,2025, Elapsed time: 0:00:00
+# Errors: 3, Warnings: 0
