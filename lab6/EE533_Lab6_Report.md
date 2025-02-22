@@ -222,6 +222,7 @@ endmodule
 ```verilog
 module RF
 (
+    input clk,
     input rst,
     input wena,
     input [63:0] wdata,
@@ -237,22 +238,22 @@ module RF
 	 
 	integer i;
 
-    always @(*) begin
+    always @(posedge clk) begin
         if (rst == 1)
         begin
             for (i = 0; i < 8; i = i + 1) begin
-                RF[i] = 64'b0;
+                RF[i] <= 64'b0;
             end
         end
         else if (wena == 1)
         begin
-            RF[waddr] = wdata;
+            RF[waddr] <= wdata;
         end
     end
 
     always @(*) begin
-        r0data = RF[r0addr];
-        r1data = RF[r1addr];
+        r0data = ((waddr == r0addr) && wena) ? RF[waddr] : RF[r0addr];
+        r1data = ((waddr == r1addr) && wena) ? RF[waddr] : RF[r1addr];
     end
 
 endmodule
@@ -288,6 +289,7 @@ endmodule
 module RF_tb;
 
 	// Inputs
+    reg clk;
 	reg rst;
 	reg wena;
 	reg [63:0] wdata;
@@ -301,6 +303,7 @@ module RF_tb;
 
 	// Instantiate the Unit Under Test (UUT)
 	RF uut (
+        .clk(clk),
 		.rst(rst), 
 		.wena(wena), 
 		.wdata(wdata), 
@@ -311,8 +314,11 @@ module RF_tb;
 		.r1data(r1data)
 	);
 
+    always #50 clk = ~clk;
+
 	initial begin
 		// Initialize Inputs
+        clk = 1;
 		rst = 1;
 		wena = 0;
 		wdata = 0;
