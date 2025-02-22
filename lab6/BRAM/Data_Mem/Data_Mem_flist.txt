@@ -1,0 +1,11 @@
+# Output products list for <Data_Mem>
+Data_Mem.asy
+Data_Mem.ngc
+Data_Mem.sym
+Data_Mem.v
+Data_Mem.veo
+Data_Mem.vhd
+Data_Mem.vho
+Data_Mem.xco
+Data_Mem_flist.txt
+Data_Mem_xmdf.tcl

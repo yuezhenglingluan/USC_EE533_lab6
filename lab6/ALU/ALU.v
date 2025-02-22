@@ -29,11 +29,14 @@ module ALU (
             default: ALU_Reg = 64'b0;
         endcase
         
+        // Zero Flag
         Zero_Flag = (ALU_Reg == 64'b0) ? 1'b1 : 1'b0;
         
+        // Store output in register
         ALU_Out = ALU_Reg;
     end
     
+    // Function to check if B is a substring of A
     function [63:0] substring_match;
         input [63:0] A, B;
         integer i;
@@ -47,6 +50,7 @@ module ALU (
         end
     endfunction
     
+    // Function to shift A and then compare with B
     function [63:0] shift_then_compare;
         input [63:0] A, B;
         integer i;
