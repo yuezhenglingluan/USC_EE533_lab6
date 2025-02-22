@@ -211,7 +211,7 @@ endmodule
 
 * Screenshot
 
-![Screenshot 2025-02-21 192717](C:\Users\StepF\Documents\GitHub\ee533\lab 6\Pic\Screenshot 2025-02-21 192717.png)
+![Screenshot 2025-02-21 192717](<Pic\Screenshot 2025-02-21 192717.png>)
 
 ## 2. Building Register File and Memories
 
@@ -395,7 +395,7 @@ endmodule
 
 * Screenshot
 
-![Screenshot 2025-02-20 133019](C:\Users\StepF\Documents\GitHub\USC_EE533_lab6\lab6\Pic\Screenshot 2025-02-20 133019.png)
+![Screenshot 2025-02-20 133019](<Pic\Screenshot 2025-02-20 133019.png>)
 
 ### 2.2 IP Core based single-port BRAM for Instruction Memory
 
@@ -593,9 +593,9 @@ endmodule
 
 * Screenshot
 
-![Screenshot 2025-02-20 135316](C:\Users\StepF\Documents\GitHub\USC_EE533_lab6\lab6\Pic\Screenshot 2025-02-20 135316.png)
+![Screenshot 2025-02-20 135316](<Pic\Screenshot 2025-02-20 135316.png>)
 
-![Screenshot 2025-02-21 203649](C:\Users\StepF\Documents\GitHub\ee533\lab 6\Pic\Screenshot 2025-02-21 203649.png)
+![Screenshot 2025-02-21 203649](<Pic\Screenshot 2025-02-21 203649.png>)
 
 ### 2.3 IP Core based dual-port BRAM for Data Memory
 
@@ -847,9 +847,9 @@ endmodule
 
 * Screenshot
 
-![Screenshot 2025-02-20 140401](C:\Users\StepF\Documents\GitHub\USC_EE533_lab6\lab6\Pic\Screenshot 2025-02-20 140401.png)
+![Screenshot 2025-02-20 140401](<Pic\Screenshot 2025-02-20 140401.png>)
 
-![Screenshot 2025-02-21 205025](C:\Users\StepF\Documents\GitHub\ee533\lab 6\Pic\Screenshot 2025-02-21 205025.png)
+![Screenshot 2025-02-21 205025](<Pic\Screenshot 2025-02-21 205025.png>)
 
 ## 3. Building Pipeline Datapath
 
@@ -958,7 +958,7 @@ endmodule
 
 * Screenshot
 
-![Screenshot 2025-02-21 141421](C:\Users\StepF\Documents\GitHub\ee533\lab 6\Pic\Screenshot 2025-02-21 141421.png)
+![Screenshot 2025-02-21 141421](<Pic\Screenshot 2025-02-21 141421.png>)
 
 ### 3.2 IF_ID_Reg
 
@@ -1142,7 +1142,7 @@ endmodule
 
 * Screenshot
 
-![Screenshot 2025-02-21 144844](C:\Users\StepF\Documents\GitHub\ee533\lab 6\Pic\Screenshot 2025-02-21 144844.png)
+![Screenshot 2025-02-21 144844](<Pic\Screenshot 2025-02-21 144844.png>)
 
 ### 3.3 ID_EX_Reg
 
@@ -1315,7 +1315,7 @@ endmodule
 
 * Screenshot
 
-![Screenshot 2025-02-21 154546](C:\Users\StepF\Documents\GitHub\ee533\lab 6\Pic\Screenshot 2025-02-21 154546.png)
+![Screenshot 2025-02-21 154546](<Pic\Screenshot 2025-02-21 154546.png>)
 
 ### 3.4 EX_M_Reg
 
@@ -1488,7 +1488,7 @@ endmodule
 
 * Verilog
 
-![Screenshot 2025-02-21 155657](C:\Users\StepF\Documents\GitHub\ee533\lab 6\Pic\Screenshot 2025-02-21 155657.png)
+![Screenshot 2025-02-21 155657](<Pic\Screenshot 2025-02-21 155657.png>)
 
 ### 3.5 M_WB_Reg
 
@@ -1633,13 +1633,13 @@ endmodule
 
 * Screenshot
 
-![Screenshot 2025-02-21 161440](C:\Users\StepF\Documents\GitHub\ee533\lab 6\Pic\Screenshot 2025-02-21 161440.png)
+![Screenshot 2025-02-21 161440](<Pic\Screenshot 2025-02-21 161440.png>)
 
 ### 3.6 Pipeline Datapath
 
 * Schematic
 
-![Screenshot 2025-02-21 224451](C:\Users\StepF\Documents\GitHub\ee533\lab 6\Pic\Screenshot 2025-02-21 224451.png)
+![Screenshot 2025-02-21 224451](<Pic\Screenshot 2025-02-21 224451.png>)
 
 * Verilog
 
@@ -1985,9 +1985,9 @@ endmodule
 
 * Screenshot
 
-![Screenshot 2025-02-21 224252 - 副本](C:\Users\StepF\Documents\GitHub\ee533\lab 6\Pic\Screenshot 2025-02-21 224252 - 副本.png)
+![Screenshot 2025-02-21 224252 - 副本](<Pic\Screenshot 2025-02-21 224252 - 副本.png>)
 
-![Screenshot 2025-02-21 224257 - 副本](C:\Users\StepF\Documents\GitHub\ee533\lab 6\Pic\Screenshot 2025-02-21 224257 - 副本.png)
+![Screenshot 2025-02-21 224257 - 副本](<Pic\Screenshot 2025-02-21 224257 - 副本.png>)
 
 ## 4. Integrating the Pipeline into NetFPGA
 
