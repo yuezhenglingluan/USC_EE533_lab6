@@ -82,11 +82,11 @@ end component;
 			c_pipe_stages => 0,
 			c_yen_is_high => 1,
 			c_depth => 512,
-			c_has_default_data => 1,
+			c_has_default_data => 0,
 			c_limit_data_pitch => 18,
 			c_has_sinit => 0,
+			c_mem_init_file => "Instr_Mem.mif",
 			c_yydisable_warnings => 1,
-			c_mem_init_file => "mif_file_16_1",
 			c_default_data => "0",
 			c_ymake_bmm => 0,
 			c_addr_width => 9);

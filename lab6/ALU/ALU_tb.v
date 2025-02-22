@@ -27,8 +27,7 @@ module ALU_tb;
 	// Inputs
 	reg [63:0] A;
 	reg [63:0] B;
-	reg [3:0] aluctrl;
-	reg clk;
+	reg [3:0] ALU_OP;
 
 	// Outputs
 	wire [63:0] ALU_Out;
@@ -39,21 +38,18 @@ module ALU_tb;
 	ALU uut (
 		.A(A), 
 		.B(B), 
-		.aluctrl(aluctrl), 
-		.clk(clk), 
+		.ALU_OP(ALU_OP), 
 		.ALU_Out(ALU_Out), 
 		.Zero_Flag(Zero_Flag), 
 		.Overflow(Overflow)
 	);
 
-	always #50 clk = ~clk;
 
 	initial begin
 		// Initialize Inputs
 		A = 0;
 		B = 0;
-		aluctrl = 0;
-		clk = 1;
+		ALU_OP = 0;
 
 		// Wait 100 ns for global reset to finish
 		#100;
@@ -61,52 +57,52 @@ module ALU_tb;
 		// Add stimulus here
 		A = 64'd1;
 		B = 64'd3;
-		aluctrl = 4'b0000;
+		ALU_OP = 4'b0000;
 		#100;
 		
 		A = 64'd4;
 		B = 64'd2;
-		aluctrl = 4'b0001;
+		ALU_OP = 4'b0001;
 		#100;
 		
 		A = 64'd5;
 		B = 64'd7;
-		aluctrl = 4'b0010;
+		ALU_OP = 4'b0010;
 		#100;
 
 		A = 64'd8;
 		B = 64'd3;
-		aluctrl = 4'b0011;
+		ALU_OP = 4'b0011;
 		#100;
 
 		A = 64'd13;
 		B = 64'd3;
-		aluctrl = 4'b0100;
+		ALU_OP = 4'b0100;
 		#100;
 
 		A = 64'd5;
 		B = 64'd5;
-		aluctrl = 4'b0101;
+		ALU_OP = 4'b0101;
 		#100;
 
 		A = 64'd4;
 		B = 64'd2;
-		aluctrl = 4'b0110;
+		ALU_OP = 4'b0110;
 		#100;
 
 		A = 64'd256;
 		B = 64'd4;
-		aluctrl = 4'b0111;
+		ALU_OP = 4'b0111;
 		#100;
 
 		A = 64'd15;
 		B = 64'd3;
-		aluctrl = 4'b1000;
+		ALU_OP = 4'b1000;
 		#100;
 
 		A = 64'd15;
 		B = 64'd5;
-		aluctrl = 4'b1001;
+		ALU_OP = 4'b1001;
 		#100;
 
 		$stop;

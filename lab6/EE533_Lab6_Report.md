@@ -5,42 +5,42 @@
 ### 1.1 Verilog of 64-bit ALU
 
 ```verilog
+`timescale 1ns / 1ps
+
 module ALU (
     input  [63:0] A,
     input  [63:0] B,
-    input  [3:0]  aluctrl,
-    input         clk,
+    input  [3:0]  ALU_OP,
     output reg [63:0] ALU_Out,
     output reg Zero_Flag,
     output reg Overflow
 );
     
-    reg [63:0] ALU_Reg;
-    
-    always @(posedge clk) begin
-        case (aluctrl)
-            4'b0000: begin
-                {Overflow, ALU_Reg} = A + B;
+    always @(*) begin
+        case (ALU_OP)
+            4'b0000: begin // Addition
+                {Overflow, ALU_Out} = A + B;
             end
-            4'b0001: begin
-                {Overflow, ALU_Reg} = A - B;
+            4'b0001: begin // Subtraction
+                {Overflow, ALU_Out} = A - B;
             end
-            4'b0010: ALU_Reg = A & B;              
-            4'b0011: ALU_Reg = A | B;              
-            4'b0100: ALU_Reg = A ^~ B;             
-            4'b0101: ALU_Reg = (A == B) ? 64'b1 : 64'b0; 
-            4'b0110: ALU_Reg = A << B[5:0];       
-            4'b0111: ALU_Reg = A >> B[5:0];    
-            4'b1000: ALU_Reg = substring_match(A, B);
-            4'b1001: ALU_Reg = shift_then_compare(A, B);
-            default: ALU_Reg = 64'b0;
+            4'b0010: ALU_Out = A & B;              // Bitwise AND
+            4'b0011: ALU_Out = A | B;              // Bitwise OR
+            4'b0100: ALU_Out = A ^~ B;             // Bitwise XNOR
+            4'b0101: ALU_Out = (A == B) ? 64'b1 : 64'b0; // Compare (Equality)
+            4'b0110: ALU_Out = A << B[5:0];        // Logical Left Shift
+            4'b0111: ALU_Out = A >> B[5:0];        // Logical Right Shift
+            4'b1000: ALU_Out = substring_match(A, B); // Substring Compare
+            4'b1001: ALU_Out = shift_then_compare(A, B); // Shift-then-Compare
+            default: ALU_Out = 64'b0;
         endcase
         
-        Zero_Flag = (ALU_Reg == 64'b0) ? 1'b1 : 1'b0;
+        // Zero Flag
+        Zero_Flag = (ALU_Out == 64'b0) ? 1'b1 : 1'b0;
         
-        ALU_Out = ALU_Reg;
     end
     
+    // Function to check if B is a substring of A
     function [63:0] substring_match;
         input [63:0] A, B;
         integer i;
@@ -54,6 +54,7 @@ module ALU (
         end
     endfunction
     
+    // Function to shift A and then compare with B
     function [63:0] shift_then_compare;
         input [63:0] A, B;
         integer i;
@@ -210,7 +211,7 @@ endmodule
 
 * Screenshot
 
-![Screenshot 2025-02-19 152920](C:\Users\StepF\Pictures\Screenshots\Screenshot 2025-02-19 152920.png)
+![Screenshot 2025-02-21 192717](C:\Users\StepF\Documents\GitHub\ee533\lab 6\Pic\Screenshot 2025-02-21 192717.png)
 
 ## 2. Building Register File and Memories
 
@@ -502,9 +503,93 @@ output [31 : 0] dout;
 endmodule
 ```
 
+* Testbench
+
+```verilog
+`timescale 1ns / 1ps
+
+////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer:
+//
+// Create Date:   19:39:36 02/21/2025
+// Design Name:   Instr_Mem
+// Module Name:   E:/Documents and Settings/student/EE533_Lsb6/Instr_Mem_tb.v
+// Project Name:  EE533_Lsb6
+// Target Device:  
+// Tool versions:  
+// Description: 
+//
+// Verilog Test Fixture created by ISE for module: Instr_Mem
+//
+// Dependencies:
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+////////////////////////////////////////////////////////////////////////////////
+
+module Instr_Mem_tb;
+
+	// Inputs
+	reg [8:0] addr;
+	reg clk;
+
+	// Outputs
+	wire [31:0] dout;
+
+	// Instantiate the Unit Under Test (UUT)
+	Instr_Mem uut (
+		.addr(addr), 
+		.clk(clk), 
+		.dout(dout)
+	);
+
+	always #50 clk = ~clk;
+
+	initial begin
+		// Initialize Inputs
+		addr = 9'd255;
+		clk = 1;
+
+		// Wait 100 ns for global reset to finish
+		#100;
+        
+		// Add stimulus here
+		@(posedge clk);
+		addr = 9'd0;
+
+		@(posedge clk);
+		addr = 9'd1;
+
+		@(posedge clk);
+		addr = 9'd2;
+
+		@(posedge clk);
+		addr = 9'd3;
+
+		@(posedge clk);
+		addr = 9'd4;
+
+		@(posedge clk);
+		addr = 9'd5;
+
+		@(posedge clk);
+
+		@(posedge clk);
+		$stop;
+
+	end
+      
+endmodule
+```
+
 * Screenshot
 
 ![Screenshot 2025-02-20 135316](C:\Users\StepF\Documents\GitHub\USC_EE533_lab6\lab6\Pic\Screenshot 2025-02-20 135316.png)
+
+![Screenshot 2025-02-21 203649](C:\Users\StepF\Documents\GitHub\ee533\lab 6\Pic\Screenshot 2025-02-21 203649.png)
 
 ### 2.3 IP Core based dual-port BRAM for Data Memory
 
@@ -657,9 +742,108 @@ input wea;
 endmodule
 ```
 
+* Testbench
+
+```verilog
+`timescale 1ns / 1ps
+
+////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer:
+//
+// Create Date:   20:46:12 02/21/2025
+// Design Name:   Data_Mem
+// Module Name:   E:/Documents and Settings/student/EE533_Lsb6/Data_Mem_tb.v
+// Project Name:  EE533_Lsb6
+// Target Device:  
+// Tool versions:  
+// Description: 
+//
+// Verilog Test Fixture created by ISE for module: Data_Mem
+//
+// Dependencies:
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+////////////////////////////////////////////////////////////////////////////////
+
+module Data_Mem_tb;
+
+	// Inputs
+	reg [7:0] addra;
+	reg [7:0] addrb;
+	reg clka;
+	reg clkb;
+	reg [63:0] dina;
+	reg wea;
+
+	// Outputs
+	wire [63:0] doutb;
+
+	// Instantiate the Unit Under Test (UUT)
+	Data_Mem uut (
+		.addra(addra), 
+		.addrb(addrb), 
+		.clka(clka), 
+		.clkb(clkb), 
+		.dina(dina), 
+		.doutb(doutb), 
+		.wea(wea)
+	);
+
+	always #50 clka = ~clka;
+	always #50 clkb = ~clkb;
+
+	initial begin
+		// Initialize Inputs
+		addra = 8'd255;
+		addrb = 8'd255;
+		clka = 1;
+		clkb = 1;
+		dina = 0;
+		wea = 0;
+
+		// Wait 100 ns for global reset to finish
+		#100;
+        
+		// Add stimulus here
+		@(posedge clka);
+		addra = 8'd0;
+		addrb = 8'd0;
+
+		@(posedge clka);
+		addra = 8'd1;
+		addrb = 8'd1;
+
+		@(posedge clka);
+		addra = 8'd2;
+		addrb = 8'd2;
+
+		@(posedge clka);
+		addra = 8'd3;
+		addrb = 8'd3;
+
+		@(posedge clka);
+		addra = 8'd4;
+		addrb = 8'd4;
+
+		@(posedge clka);
+
+		@(posedge clka);
+		$stop;
+
+	end
+      
+endmodule
+```
+
 * Screenshot
 
 ![Screenshot 2025-02-20 140401](C:\Users\StepF\Documents\GitHub\USC_EE533_lab6\lab6\Pic\Screenshot 2025-02-20 140401.png)
+
+![Screenshot 2025-02-21 205025](C:\Users\StepF\Documents\GitHub\ee533\lab 6\Pic\Screenshot 2025-02-21 205025.png)
 
 ## 3. Building Pipeline Datapath
 
@@ -1446,4 +1630,358 @@ endmodule
 ![Screenshot 2025-02-21 161440](C:\Users\StepF\Documents\GitHub\ee533\lab 6\Pic\Screenshot 2025-02-21 161440.png)
 
 ### 3.6 Pipeline Datapath
+
+* Schematic
+
+![Screenshot 2025-02-21 224451](C:\Users\StepF\Documents\GitHub\ee533\lab 6\Pic\Screenshot 2025-02-21 224451.png)
+
+* Verilog
+
+```verilog
+////////////////////////////////////////////////////////////////////////////////
+// Copyright (c) 1995-2008 Xilinx, Inc.  All rights reserved.
+////////////////////////////////////////////////////////////////////////////////
+//   ____  ____ 
+//  /   /\/   / 
+// /___/  \  /    Vendor: Xilinx 
+// \   \   \/     Version : 10.1
+//  \   \         Application : sch2verilog
+//  /   /         Filename : Pipeline.vf
+// /___/   /\     Timestamp : 02/21/2025 22:24:18
+// \   \  /  \ 
+//  \___\/\___\ 
+//
+//Command: C:\Xilinx\10.1\ISE\bin\nt\unwrapped\sch2verilog.exe -intstyle ise -family virtex2p -w "E:/Documents and Settings/student/EE533_Lsb6/Pipeline.sch" Pipeline.vf
+//Design Name: Pipeline
+//Device: virtex2p
+//Purpose:
+//    This verilog netlist is translated from an ECS schematic.It can be 
+//    synthesized and simulated, but it should not be modified. 
+//
+`timescale 1ns / 1ps
+
+module Pipeline(ALU_OP, 
+                clk, 
+                ONE, 
+                rst, 
+                Dout_M, 
+                Dout_WB, 
+                PC, 
+                PC_next, 
+                Reg1_ID, 
+                Reg2_ID, 
+                R1_out_EX, 
+                R1_out_ID, 
+                R1_out_M, 
+                R2_out_EX, 
+                R2_out_ID, 
+                R2_out_M, 
+                WMemEn_EX, 
+                WMemEn_ID, 
+                WMemEn_M, 
+                WRegEn_EX, 
+                WRegEn_ID, 
+                WRegEn_M, 
+                WRegEn_WB, 
+                WReg1_EX, 
+                WReg1_ID, 
+                WReg1_M, 
+                WReg1_WB);
+
+    input [3:0] ALU_OP;
+    input clk;
+    input [63:0] ONE;
+    input rst;
+   output [63:0] Dout_M;
+   output [63:0] Dout_WB;
+   output [63:0] PC;
+   output [63:0] PC_next;
+   output [2:0] Reg1_ID;
+   output [2:0] Reg2_ID;
+   output [63:0] R1_out_EX;
+   output [63:0] R1_out_ID;
+   output [7:0] R1_out_M;
+   output [63:0] R2_out_EX;
+   output [63:0] R2_out_ID;
+   output [63:0] R2_out_M;
+   output WMemEn_EX;
+   output WMemEn_ID;
+   output WMemEn_M;
+   output WRegEn_EX;
+   output WRegEn_ID;
+   output WRegEn_M;
+   output WRegEn_WB;
+   output [2:0] WReg1_EX;
+   output [2:0] WReg1_ID;
+   output [2:0] WReg1_M;
+   output [2:0] WReg1_WB;
+   
+   wire [31:0] Instr;
+   wire [2:0] WReg1_WB_DUMMY;
+   wire [2:0] WReg1_EX_DUMMY;
+   wire WRegEn_M_DUMMY;
+   wire [63:0] R2_out_M_DUMMY;
+   wire [2:0] Reg2_ID_DUMMY;
+   wire WMemEn_ID_DUMMY;
+   wire [63:0] Dout_M_DUMMY;
+   wire WRegEn_ID_DUMMY;
+   wire [63:0] PC_DUMMY;
+   wire [63:0] R2_out_EX_DUMMY;
+   wire [63:0] R1_out_ID_DUMMY;
+   wire [2:0] WReg1_M_DUMMY;
+   wire WRegEn_WB_DUMMY;
+   wire WMemEn_EX_DUMMY;
+   wire [2:0] WReg1_ID_DUMMY;
+   wire WRegEn_EX_DUMMY;
+   wire [63:0] Dout_WB_DUMMY;
+   wire WMemEn_M_DUMMY;
+   wire [7:0] R1_out_M_DUMMY;
+   wire [63:0] R1_out_EX_DUMMY;
+   wire [63:0] PC_next_DUMMY;
+   wire [63:0] R2_out_ID_DUMMY;
+   wire [2:0] Reg1_ID_DUMMY;
+   
+   assign Dout_M[63:0] = Dout_M_DUMMY[63:0];
+   assign Dout_WB[63:0] = Dout_WB_DUMMY[63:0];
+   assign PC[63:0] = PC_DUMMY[63:0];
+   assign PC_next[63:0] = PC_next_DUMMY[63:0];
+   assign Reg1_ID[2:0] = Reg1_ID_DUMMY[2:0];
+   assign Reg2_ID[2:0] = Reg2_ID_DUMMY[2:0];
+   assign R1_out_EX[63:0] = R1_out_EX_DUMMY[63:0];
+   assign R1_out_ID[63:0] = R1_out_ID_DUMMY[63:0];
+   assign R1_out_M[7:0] = R1_out_M_DUMMY[7:0];
+   assign R2_out_EX[63:0] = R2_out_EX_DUMMY[63:0];
+   assign R2_out_ID[63:0] = R2_out_ID_DUMMY[63:0];
+   assign R2_out_M[63:0] = R2_out_M_DUMMY[63:0];
+   assign WMemEn_EX = WMemEn_EX_DUMMY;
+   assign WMemEn_ID = WMemEn_ID_DUMMY;
+   assign WMemEn_M = WMemEn_M_DUMMY;
+   assign WRegEn_EX = WRegEn_EX_DUMMY;
+   assign WRegEn_ID = WRegEn_ID_DUMMY;
+   assign WRegEn_M = WRegEn_M_DUMMY;
+   assign WRegEn_WB = WRegEn_WB_DUMMY;
+   assign WReg1_EX[2:0] = WReg1_EX_DUMMY[2:0];
+   assign WReg1_ID[2:0] = WReg1_ID_DUMMY[2:0];
+   assign WReg1_M[2:0] = WReg1_M_DUMMY[2:0];
+   assign WReg1_WB[2:0] = WReg1_WB_DUMMY[2:0];
+   ALU XLXI_1 (.A(PC_DUMMY[63:0]), 
+               .ALU_OP(ALU_OP[3:0]), 
+               .B(ONE[63:0]), 
+               .ALU_Out(PC_next_DUMMY[63:0]), 
+               .Overflow(), 
+               .Zero_Flag());
+   Instr_Mem XLXI_2 (.addr(PC_DUMMY[8:0]), 
+                     .clk(clk), 
+                     .dout(Instr[31:0]));
+   IF_ID_Reg XLXI_3 (.clk(clk), 
+                     .Reg1_IF(Instr[29:27]), 
+                     .Reg2_IF(Instr[26:24]), 
+                     .rst(rst), 
+                     .Unused_IF(Instr[20:0]), 
+                     .WMemEn_IF(Instr[31]), 
+                     .WRegEn_IF(Instr[30]), 
+                     .WReg1_IF(Instr[23:21]), 
+                     .Reg1_ID(Reg1_ID_DUMMY[2:0]), 
+                     .Reg2_ID(Reg2_ID_DUMMY[2:0]), 
+                     .Unused_ID(), 
+                     .WMemEn_ID(WMemEn_ID_DUMMY), 
+                     .WRegEn_ID(WRegEn_ID_DUMMY), 
+                     .WReg1_ID(WReg1_ID_DUMMY[2:0]));
+   PC XLXI_4 (.clk(clk), 
+              .PC_next(PC_next_DUMMY[63:0]), 
+              .rst(rst), 
+              .PC(PC_DUMMY[63:0]));
+   RF XLXI_5 (.clk(clk), 
+              .rst(rst), 
+              .r0addr(Reg1_ID_DUMMY[2:0]), 
+              .r1addr(Reg2_ID_DUMMY[2:0]), 
+              .waddr(WReg1_WB_DUMMY[2:0]), 
+              .wdata(Dout_WB_DUMMY[63:0]), 
+              .wena(WRegEn_WB_DUMMY), 
+              .r0data(R1_out_ID_DUMMY[63:0]), 
+              .r1data(R2_out_ID_DUMMY[63:0]));
+   ID_EX_Reg XLXI_6 (.clk(clk), 
+                     .rst(rst), 
+                     .R1_out_ID(R1_out_ID_DUMMY[63:0]), 
+                     .R2_out_ID(R2_out_ID_DUMMY[63:0]), 
+                     .WMemEn_ID(WMemEn_ID_DUMMY), 
+                     .WRegEn_ID(WRegEn_ID_DUMMY), 
+                     .WReg1_ID(WReg1_ID_DUMMY[2:0]), 
+                     .R1_out_EX(R1_out_EX_DUMMY[63:0]), 
+                     .R2_out_EX(R2_out_EX_DUMMY[63:0]), 
+                     .WMemEn_EX(WMemEn_EX_DUMMY), 
+                     .WRegEn_EX(WRegEn_EX_DUMMY), 
+                     .WReg1_EX(WReg1_EX_DUMMY[2:0]));
+   EX_M_Reg XLXI_7 (.clk(clk), 
+                    .rst(rst), 
+                    .R1_out_EX(R1_out_EX_DUMMY[63:0]), 
+                    .R2_out_EX(R2_out_EX_DUMMY[63:0]), 
+                    .WMemEn_EX(WMemEn_EX_DUMMY), 
+                    .WRegEn_EX(WRegEn_EX_DUMMY), 
+                    .WReg1_EX(WReg1_EX_DUMMY[2:0]), 
+                    .R1_out_M(R1_out_M_DUMMY[7:0]), 
+                    .R2_out_M(R2_out_M_DUMMY[63:0]), 
+                    .WMemEn_M(WMemEn_M_DUMMY), 
+                    .WRegEn_M(WRegEn_M_DUMMY), 
+                    .WReg1_M(WReg1_M_DUMMY[2:0]));
+   Data_Mem XLXI_8 (.addra(R1_out_M_DUMMY[7:0]), 
+                    .addrb(R1_out_M_DUMMY[7:0]), 
+                    .clka(clk), 
+                    .clkb(clk), 
+                    .dina(R2_out_M_DUMMY[63:0]), 
+                    .wea(WMemEn_M_DUMMY), 
+                    .doutb(Dout_M_DUMMY[63:0]));
+   M_WB_Reg XLXI_9 (.clk(clk), 
+                    .Dout_M(Dout_M_DUMMY[63:0]), 
+                    .rst(rst), 
+                    .WRegEn_M(WRegEn_M_DUMMY), 
+                    .WReg1_M(WReg1_M_DUMMY[2:0]), 
+                    .Dout_WB(Dout_WB_DUMMY[63:0]), 
+                    .WRegEn_WB(WRegEn_WB_DUMMY), 
+                    .WReg1_WB(WReg1_WB_DUMMY[2:0]));
+endmodule
+```
+
+* Testbench
+
+```verilog
+`timescale 1ns / 1ps
+
+////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer:
+//
+// Create Date:   22:27:30 02/21/2025
+// Design Name:   Pipeline
+// Module Name:   E:/Documents and Settings/student/EE533_Lsb6/EE533_Lab_6/Pipeline_tb.v
+// Project Name:  EE533_Lab_6
+// Target Device:  
+// Tool versions:  
+// Description: 
+//
+// Verilog Test Fixture created by ISE for module: Pipeline
+//
+// Dependencies:
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+////////////////////////////////////////////////////////////////////////////////
+
+module Pipeline_tb;
+
+	// Inputs
+	reg [3:0] ALU_OP;
+	reg clk;
+	reg [63:0] ONE;
+	reg rst;
+
+	// Outputs
+	wire [63:0] Dout_M;
+	wire [63:0] Dout_WB;
+	wire [63:0] PC;
+	wire [63:0] PC_next;
+	wire [2:0] Reg1_ID;
+	wire [2:0] Reg2_ID;
+	wire [63:0] R1_out_EX;
+	wire [63:0] R1_out_ID;
+	wire [7:0] R1_out_M;
+	wire [63:0] R2_out_EX;
+	wire [63:0] R2_out_ID;
+	wire [63:0] R2_out_M;
+	wire WMemEn_EX;
+	wire WMemEn_ID;
+	wire WMemEn_M;
+	wire WRegEn_EX;
+	wire WRegEn_ID;
+	wire WRegEn_M;
+	wire WRegEn_WB;
+	wire [2:0] WReg1_EX;
+	wire [2:0] WReg1_ID;
+	wire [2:0] WReg1_M;
+	wire [2:0] WReg1_WB;
+
+	// Instantiate the Unit Under Test (UUT)
+	Pipeline uut (
+		.ALU_OP(ALU_OP), 
+		.clk(clk), 
+		.ONE(ONE), 
+		.rst(rst), 
+		.Dout_M(Dout_M), 
+		.Dout_WB(Dout_WB), 
+		.PC(PC), 
+		.PC_next(PC_next), 
+		.Reg1_ID(Reg1_ID), 
+		.Reg2_ID(Reg2_ID), 
+		.R1_out_EX(R1_out_EX), 
+		.R1_out_ID(R1_out_ID), 
+		.R1_out_M(R1_out_M), 
+		.R2_out_EX(R2_out_EX), 
+		.R2_out_ID(R2_out_ID), 
+		.R2_out_M(R2_out_M), 
+		.WMemEn_EX(WMemEn_EX), 
+		.WMemEn_ID(WMemEn_ID), 
+		.WMemEn_M(WMemEn_M), 
+		.WRegEn_EX(WRegEn_EX), 
+		.WRegEn_ID(WRegEn_ID), 
+		.WRegEn_M(WRegEn_M), 
+		.WRegEn_WB(WRegEn_WB), 
+		.WReg1_EX(WReg1_EX), 
+		.WReg1_ID(WReg1_ID), 
+		.WReg1_M(WReg1_M), 
+		.WReg1_WB(WReg1_WB)
+	);
+
+	always #50 clk = ~clk;
+
+	initial begin
+		// Initialize Inputs
+		ALU_OP = 0;
+		clk = 1;
+		ONE = 1;
+		rst = 1;
+
+		// Wait 100 ns for global reset to finish
+		#100;
+		rst = 0;
+        
+		// Add stimulus here
+		@(posedge clk);
+
+		@(posedge clk);
+
+		@(posedge clk);
+
+		@(posedge clk);
+
+		@(posedge clk);
+
+		@(posedge clk);
+
+		@(posedge clk);
+
+		@(posedge clk);
+
+		@(posedge clk);
+
+		@(posedge clk);
+
+		@(posedge clk);
+
+		@(posedge clk);
+		$stop;
+
+	end
+      
+endmodule
+```
+
+* Screenshot
+
+![Screenshot 2025-02-21 224252 - 副本](C:\Users\StepF\Documents\GitHub\ee533\lab 6\Pic\Screenshot 2025-02-21 224252 - 副本.png)
+
+![Screenshot 2025-02-21 224257 - 副本](C:\Users\StepF\Documents\GitHub\ee533\lab 6\Pic\Screenshot 2025-02-21 224257 - 副本.png)
+
+## 4. Integrating the Pipeline into NetFPGA
 

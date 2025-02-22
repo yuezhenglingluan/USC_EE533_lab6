@@ -1,5 +1,6 @@
 # Output products list for <Instr_Mem>
 Instr_Mem.asy
+Instr_Mem.mif
 Instr_Mem.ngc
 Instr_Mem.sym
 Instr_Mem.v

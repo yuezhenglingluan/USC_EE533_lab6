@@ -1,39 +1,36 @@
+`timescale 1ns / 1ps
+
 module ALU (
     input  [63:0] A,
     input  [63:0] B,
-    input  [3:0]  aluctrl,
-    input         clk,
+    input  [3:0]  ALU_OP,
     output reg [63:0] ALU_Out,
     output reg Zero_Flag,
     output reg Overflow
 );
     
-    reg [63:0] ALU_Reg;
-    
-    always @(posedge clk) begin
-        case (aluctrl)
+    always @(*) begin
+        case (ALU_OP)
             4'b0000: begin // Addition
-                {Overflow, ALU_Reg} = A + B;
+                {Overflow, ALU_Out} = A + B;
             end
             4'b0001: begin // Subtraction
-                {Overflow, ALU_Reg} = A - B;
+                {Overflow, ALU_Out} = A - B;
             end
-            4'b0010: ALU_Reg = A & B;              // Bitwise AND
-            4'b0011: ALU_Reg = A | B;              // Bitwise OR
-            4'b0100: ALU_Reg = A ^~ B;             // Bitwise XNOR
-            4'b0101: ALU_Reg = (A == B) ? 64'b1 : 64'b0; // Compare (Equality)
-            4'b0110: ALU_Reg = A << B[5:0];        // Logical Left Shift
-            4'b0111: ALU_Reg = A >> B[5:0];        // Logical Right Shift
-            4'b1000: ALU_Reg = substring_match(A, B); // Substring Compare
-            4'b1001: ALU_Reg = shift_then_compare(A, B); // Shift-then-Compare
-            default: ALU_Reg = 64'b0;
+            4'b0010: ALU_Out = A & B;              // Bitwise AND
+            4'b0011: ALU_Out = A | B;              // Bitwise OR
+            4'b0100: ALU_Out = A ^~ B;             // Bitwise XNOR
+            4'b0101: ALU_Out = (A == B) ? 64'b1 : 64'b0; // Compare (Equality)
+            4'b0110: ALU_Out = A << B[5:0];        // Logical Left Shift
+            4'b0111: ALU_Out = A >> B[5:0];        // Logical Right Shift
+            4'b1000: ALU_Out = substring_match(A, B); // Substring Compare
+            4'b1001: ALU_Out = shift_then_compare(A, B); // Shift-then-Compare
+            default: ALU_Out = 64'b0;
         endcase
         
         // Zero Flag
-        Zero_Flag = (ALU_Reg == 64'b0) ? 1'b1 : 1'b0;
+        Zero_Flag = (ALU_Out == 64'b0) ? 1'b1 : 1'b0;
         
-        // Store output in register
-        ALU_Out = ALU_Reg;
     end
     
     // Function to check if B is a substring of A
