@@ -1969,5 +1969,6 @@ endmodule
 
 ![Screenshot 2025-02-22 170433](<Pic\Screenshot 2025-02-22 170433.png>)
 
-## 4. Integrating the Pipeline into NetFPGA
+## Extra: Link to the Github Repo
 
+* https://github.com/yuezhenglingluan/USC_EE533_lab6
