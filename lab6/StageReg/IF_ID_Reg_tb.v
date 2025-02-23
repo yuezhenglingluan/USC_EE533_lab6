@@ -25,8 +25,6 @@
 module IF_ID_Reg_tb;
 
 	// Inputs
-	reg clk;
-	reg rst;
 	reg WMemEn_IF;
 	reg WRegEn_IF;
     reg [2:0] Reg1_IF;
@@ -44,8 +42,6 @@ module IF_ID_Reg_tb;
 
 	// Instantiate the Unit Under Test (UUT)
 	IF_ID_Reg uut (
-		.clk(clk),
-		.rst(rst),
 		.WMemEn_IF(WMemEn_IF),
 		.WRegEn_IF(WRegEn_IF),
 		.Reg1_IF(Reg1_IF),
@@ -60,19 +56,14 @@ module IF_ID_Reg_tb;
 		.Unused_ID(Unused_ID)
 	);
 
-	always #50 clk = ~clk;
-
 	initial begin
 		// Initialize Inputs
-		clk = 1;
-		rst = 1;
 
 		// Wait 100 ns for global reset to finish
 		#100;
-		rst = 0;
         
 		// Add stimulus here
-		@(posedge clk);
+		#100;
 		WMemEn_IF = 1'b0;
 		WRegEn_IF = 1'b1;
     	Reg1_IF = 3'd0;
@@ -80,7 +71,7 @@ module IF_ID_Reg_tb;
     	WReg1_IF = 3'd2;
     	Unused_IF = 21'd0;
 
-		@(posedge clk);
+		#100;
 		WMemEn_IF = 1'b0;
 		WRegEn_IF = 1'b1;
     	Reg1_IF = 3'd0;
@@ -88,7 +79,7 @@ module IF_ID_Reg_tb;
     	WReg1_IF = 3'd3;
     	Unused_IF = 21'd0;
 
-		@(posedge clk);
+		#100;
 		WMemEn_IF = 1'b0;
 		WRegEn_IF = 1'b0;
     	Reg1_IF = 3'd0;
@@ -96,7 +87,7 @@ module IF_ID_Reg_tb;
     	WReg1_IF = 3'd0;
     	Unused_IF = 21'd0;
 
-		@(posedge clk);
+		#100;
 		WMemEn_IF = 1'b0;
 		WRegEn_IF = 1'b0;
     	Reg1_IF = 3'd0;
@@ -104,7 +95,7 @@ module IF_ID_Reg_tb;
     	WReg1_IF = 3'd0;
     	Unused_IF = 21'd0;
 
-		@(posedge clk);
+		#100;
 		WMemEn_IF = 1'b0;
 		WRegEn_IF = 1'b0;
     	Reg1_IF = 3'd0;
@@ -112,7 +103,7 @@ module IF_ID_Reg_tb;
     	WReg1_IF = 3'd0;
     	Unused_IF = 21'd0;
 
-		@(posedge clk);
+		#100;
 		WMemEn_IF = 1'b1;
 		WRegEn_IF = 1'b0;
     	Reg1_IF = 3'd2;
@@ -120,6 +111,7 @@ module IF_ID_Reg_tb;
     	WReg1_IF = 3'd0;
     	Unused_IF = 21'd0;
 
+		#100;
 		$stop;
 
 	end

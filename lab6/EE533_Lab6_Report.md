@@ -969,8 +969,6 @@ endmodule
 
 module IF_ID_Reg
 (
-    input clk,
-    input rst,
     input WMemEn_IF,
     input WRegEn_IF,
     input [2:0] Reg1_IF,
@@ -978,32 +976,20 @@ module IF_ID_Reg
     input [2:0] WReg1_IF,
     input [20:0] Unused_IF,
 
-    output reg WMemEn_ID,
-    output reg WRegEn_ID,
-    output reg [2:0] Reg1_ID,
-    output reg [2:0] Reg2_ID,
-    output reg [2:0] WReg1_ID,
-    output reg [20:0] Unused_ID
+    output WMemEn_ID,
+    output WRegEn_ID,
+    output [2:0] Reg1_ID,
+    output [2:0] Reg2_ID,
+    output [2:0] WReg1_ID,
+    output [20:0] Unused_ID
 );
 
-    always @(posedge clk) begin
-        if (rst) begin
-            WMemEn_ID <= 1'd0;
-            WRegEn_ID <= 1'd0;
-            Reg1_ID <= 3'd0;
-            Reg2_ID <= 3'd0;
-            WReg1_ID <= 3'd0;
-            Unused_ID <= 20'd0;
-        end
-        else begin
-            WMemEn_ID <= WMemEn_IF;
-            WRegEn_ID <= WRegEn_IF;
-            Reg1_ID <= Reg1_IF;
-            Reg2_ID <= Reg2_IF;
-            WReg1_ID <= WReg1_IF;
-            Unused_ID <= Unused_IF;
-        end
-    end
+    assign WMemEn_ID = WMemEn_IF;
+    assign WRegEn_ID = WRegEn_IF;
+    assign Reg1_ID = Reg1_IF;
+    assign Reg2_ID = Reg2_IF;
+    assign WReg1_ID = WReg1_IF;
+    assign Unused_ID = Unused_IF;
 
 endmodule
 ```
@@ -1038,8 +1024,6 @@ endmodule
 module IF_ID_Reg_tb;
 
 	// Inputs
-	reg clk;
-	reg rst;
 	reg WMemEn_IF;
 	reg WRegEn_IF;
     reg [2:0] Reg1_IF;
@@ -1057,8 +1041,6 @@ module IF_ID_Reg_tb;
 
 	// Instantiate the Unit Under Test (UUT)
 	IF_ID_Reg uut (
-		.clk(clk),
-		.rst(rst),
 		.WMemEn_IF(WMemEn_IF),
 		.WRegEn_IF(WRegEn_IF),
 		.Reg1_IF(Reg1_IF),
@@ -1073,19 +1055,14 @@ module IF_ID_Reg_tb;
 		.Unused_ID(Unused_ID)
 	);
 
-	always #50 clk = ~clk;
-
 	initial begin
 		// Initialize Inputs
-		clk = 1;
-		rst = 1;
 
 		// Wait 100 ns for global reset to finish
 		#100;
-		rst = 0;
         
 		// Add stimulus here
-		@(posedge clk);
+		#100;
 		WMemEn_IF = 1'b0;
 		WRegEn_IF = 1'b1;
     	Reg1_IF = 3'd0;
@@ -1093,7 +1070,7 @@ module IF_ID_Reg_tb;
     	WReg1_IF = 3'd2;
     	Unused_IF = 21'd0;
 
-		@(posedge clk);
+		#100;
 		WMemEn_IF = 1'b0;
 		WRegEn_IF = 1'b1;
     	Reg1_IF = 3'd0;
@@ -1101,7 +1078,7 @@ module IF_ID_Reg_tb;
     	WReg1_IF = 3'd3;
     	Unused_IF = 21'd0;
 
-		@(posedge clk);
+		#100;
 		WMemEn_IF = 1'b0;
 		WRegEn_IF = 1'b0;
     	Reg1_IF = 3'd0;
@@ -1109,7 +1086,7 @@ module IF_ID_Reg_tb;
     	WReg1_IF = 3'd0;
     	Unused_IF = 21'd0;
 
-		@(posedge clk);
+		#100;
 		WMemEn_IF = 1'b0;
 		WRegEn_IF = 1'b0;
     	Reg1_IF = 3'd0;
@@ -1117,7 +1094,7 @@ module IF_ID_Reg_tb;
     	WReg1_IF = 3'd0;
     	Unused_IF = 21'd0;
 
-		@(posedge clk);
+		#100;
 		WMemEn_IF = 1'b0;
 		WRegEn_IF = 1'b0;
     	Reg1_IF = 3'd0;
@@ -1125,7 +1102,7 @@ module IF_ID_Reg_tb;
     	WReg1_IF = 3'd0;
     	Unused_IF = 21'd0;
 
-		@(posedge clk);
+		#100;
 		WMemEn_IF = 1'b1;
 		WRegEn_IF = 1'b0;
     	Reg1_IF = 3'd2;
@@ -1133,6 +1110,7 @@ module IF_ID_Reg_tb;
     	WReg1_IF = 3'd0;
     	Unused_IF = 21'd0;
 
+		#100;
 		$stop;
 
 	end
@@ -1142,7 +1120,7 @@ endmodule
 
 * Screenshot
 
-![Screenshot 2025-02-21 144844](C:\Users\StepF\Documents\GitHub\ee533\lab 6\Pic\Screenshot 2025-02-21 144844.png)
+![Screenshot 2025-02-22 163815](C:\Users\StepF\Documents\GitHub\ee533\lab 6\Pic\Screenshot 2025-02-22 163815.png)
 
 ### 3.3 ID_EX_Reg
 
@@ -1163,24 +1141,23 @@ module ID_EX_Reg
 
     output reg WRegEn_EX,
     output reg WMemEn_EX,
-    output reg [63:0] R1_out_EX,
-    output reg [63:0] R2_out_EX,
+    output [63:0] R1_out_EX,
+    output [63:0] R2_out_EX,
     output reg [2:0] WReg1_EX
 );
+
+    assign R1_out_EX = R1_out_ID;
+    assign R2_out_EX = R2_out_ID;
 
     always @(posedge clk) begin
         if (rst) begin
             WRegEn_EX <= 0;
             WMemEn_EX <= 0;
-            R1_out_EX <= 0;
-            R2_out_EX <= 0;
             WReg1_EX <= 0;
         end
         else begin
             WRegEn_EX <= WRegEn_ID;
             WMemEn_EX <= WMemEn_ID;
-            R1_out_EX <= R1_out_ID;
-            R2_out_EX <= R2_out_ID;
             WReg1_EX <= WReg1_ID;
         end
     end
@@ -1315,7 +1292,7 @@ endmodule
 
 * Screenshot
 
-![Screenshot 2025-02-21 154546](C:\Users\StepF\Documents\GitHub\ee533\lab 6\Pic\Screenshot 2025-02-21 154546.png)
+![Screenshot 2025-02-22 164225](C:\Users\StepF\Documents\GitHub\ee533\lab 6\Pic\Screenshot 2025-02-22 164225.png)
 
 ### 3.4 EX_M_Reg
 
@@ -1633,7 +1610,7 @@ endmodule
 
 * Screenshot
 
-![Screenshot 2025-02-21 161440](C:\Users\StepF\Documents\GitHub\ee533\lab 6\Pic\Screenshot 2025-02-21 161440.png)
+![Screenshot 2025-02-22 164523](C:\Users\StepF\Documents\GitHub\ee533\lab 6\Pic\Screenshot 2025-02-22 164523.png)
 
 ### 3.6 Pipeline Datapath
 
@@ -1985,9 +1962,9 @@ endmodule
 
 * Screenshot
 
-![Screenshot 2025-02-21 224252 - 副本](C:\Users\StepF\Documents\GitHub\ee533\lab 6\Pic\Screenshot 2025-02-21 224252 - 副本.png)
+![Screenshot 2025-02-22 170429](C:\Users\StepF\Documents\GitHub\ee533\lab 6\Pic\Screenshot 2025-02-22 170429.png)
 
-![Screenshot 2025-02-21 224257 - 副本](C:\Users\StepF\Documents\GitHub\ee533\lab 6\Pic\Screenshot 2025-02-21 224257 - 副本.png)
+![Screenshot 2025-02-22 170433](C:\Users\StepF\Documents\GitHub\ee533\lab 6\Pic\Screenshot 2025-02-22 170433.png)
 
 ## 4. Integrating the Pipeline into NetFPGA
 

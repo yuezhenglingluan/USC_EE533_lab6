@@ -7,7 +7,7 @@
 // \   \   \/     Version : 10.1
 //  \   \         Application : sch2verilog
 //  /   /         Filename : Pipeline.vf
-// /___/   /\     Timestamp : 02/21/2025 22:24:18
+// /___/   /\     Timestamp : 02/22/2025 17:01:07
 // \   \  /  \ 
 //  \___\/\___\ 
 //
@@ -133,10 +133,8 @@ module Pipeline(ALU_OP,
    Instr_Mem XLXI_2 (.addr(PC_DUMMY[8:0]), 
                      .clk(clk), 
                      .dout(Instr[31:0]));
-   IF_ID_Reg XLXI_3 (.clk(clk), 
-                     .Reg1_IF(Instr[29:27]), 
+   IF_ID_Reg XLXI_3 (.Reg1_IF(Instr[29:27]), 
                      .Reg2_IF(Instr[26:24]), 
-                     .rst(rst), 
                      .Unused_IF(Instr[20:0]), 
                      .WMemEn_IF(Instr[31]), 
                      .WRegEn_IF(Instr[30]), 
